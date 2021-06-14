@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Text Summarizer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="../static/css/style.css">
+  </head>
+  <body>
+    <div id="app" class="banner">
+      <div class="navbar">
+        <img href="../static/img/logo.png" class="logo">
+        <ul>
+          <li><a href="#">Home</a></li>
+        </ul>
+      </div>
+      <div class="content">
+        <h1>Summarize and translate article</h1>
+        <p></p>
+        <div class="set, filebox">
+          Website URL : <input class="address" v-model="url" spellcheck="false"/>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          Summary Rate (%) : <input type="number" min="1" max="100" class="compress" v-model="summarizerate" spellcheck="false" placeholder="60"
+          pattern="[0-9]{3}" title="This must be a number with up to 3 decimal places"/>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <label> File
+            <input type="file" id="file" ref="file" v-on:change="handleFileUpload">
+          </label>
+        </div>
+        <p></p>
+        <div>
+          <!-- <button class="button" type="button" v-on:click="showModal = true"><span></span>Show Modal</button> -->
+          <button type="button" v-on:click="getNews"><span></span>Fetch Article</button>
+          <button type="button" v-on:click="summarize"><span></span>Summarize</button>
+          <button type="button" v-on:click="translate"><span></span>Translate</button>
+          <button type="button" v-on:click="clear"><span></span>Clear</button>
+          <button type="button" v-on:click="upload"><span></span>Upload PDF File</button>
+        </div>
+        <div>
+          <textarea class="result" v-model="origin" spellcheck="false"></textarea>
+          <textarea class="result" v-model="summarized" spellcheck="false"></textarea>
+          <textarea class="result" v-model="translated" spellcheck="false"></textarea>
+        </div>
+        <div>
+          <b>{{origin && origin.length ? countOrigin : 0}} words</b>
+          <b>{{summarized && summarized.length ? countSummarize : 0}} words</b>
+          <b>{{translated && translated.length ? countTranslate : 0}} words</b>
+        </div>
+        <transition name="fade" appear>
+          <div class="modal-overlay" v-if="showModal" @click="showModal = false"></div>
+        </transition>
+        <transition name="pop" appear>
+          <div class="modal" role="dialog" v-if="showModal">
+            <h2>{{ message }}</h2>
+            <button @click="showModal = false" class="button"><span></span>Close</button>
+          </div>
+        </transition>
+      </div>
+    </div>
+    <script type="text/javascript" src="../static/js/app.js"></script>
+  </body>
+</html>
